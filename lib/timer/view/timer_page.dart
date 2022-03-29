@@ -2,10 +2,11 @@ import 'package:bloctest/bloc/timer_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:bloctest/ticker.dart';
-
+import 'package:bloctest/timer/timer.dart';
+import 'package:flutter/src/widgets/actions.dart';
 
 class TimerPage extends StatelessWidget {
-  const TimerPage({ Key? key }) : super(key: key);
+  const TimerPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,10 +17,8 @@ class TimerPage extends StatelessWidget {
   }
 }
 
-
-
 class TimerViewer extends StatelessWidget {
-  const TimerViewer({ Key? key }) : super(key: key);
+  const TimerViewer({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -37,13 +36,28 @@ class TimerViewer extends StatelessWidget {
                 child: Center(
                   child: TimerText(),
                 ),
-                Actions(),
               ),
+              Actions()
             ],
           ),
-          
         ],
       ),
+    );
+  }
+}
+
+class TimerText extends StatelessWidget {
+  const TimerText({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final duration = context.select((TimerBloc bloc) => bloc.state.duration);
+    final minutesStr = (duration / 60).floor().toString().padLeft(2, '0');
+    final secondsStr = (duration % 60).floor().toString().padLeft(2, '0');
+
+    return Text(
+      '$minutesStr : $secondsStr',
+      style: Theme.of(context).textTheme.headline1,
     );
   }
 }
