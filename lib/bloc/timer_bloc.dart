@@ -6,13 +6,12 @@ import 'package:bloctest/ticker.dart';
 
 import 'package:meta/meta.dart';
 
-
 part 'timer_event.dart';
 part 'timer_state.dart';
 
 class TimerBloc extends Bloc<TimerEvent, TimerState> {
   final Ticker _ticker;
-  static const int _duration = 60;
+  static const int _duration = 3540112;
 
   StreamSubscription<int>? _tickerSubscription;
 
@@ -20,6 +19,9 @@ class TimerBloc extends Bloc<TimerEvent, TimerState> {
       : _ticker = ticker,
         super(TimerInitial(_duration)) {
     on<TimerStarted>(_onStarted);
+    on<TimerPaused>(_onPaused);
+    on<TimerResumed>(_onResumed);
+    on<TimerReset>(_onReset);
     on<TimerTicked>(_onTicked);
   }
 
@@ -38,7 +40,7 @@ class TimerBloc extends Bloc<TimerEvent, TimerState> {
   }
 
   void _onPaused(TimerPaused event, Emitter<TimerState> emit) {
-    if(state is TimerRunInProgress){
+    if (state is TimerRunInProgress) {
       _tickerSubscription?.pause();
       emit(TimerRunPause(state.duration));
     }
@@ -57,18 +59,8 @@ class TimerBloc extends Bloc<TimerEvent, TimerState> {
   }
 
   void _onTicked(TimerTicked event, Emitter<TimerState> emit) {
-    emit(
-      event.duration > 0
-      ? TimerRunInProgress(event.duration)
-      : TimerRunComplete()
-    );
+    emit(event.duration > 0
+        ? TimerRunInProgress(event.duration)
+        : TimerRunComplete());
   }
-
-  
-
-
-
-
-
-
 }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'timer/view/timer.dart';
+import 'timer/view/timer_page.dart';
 
 class App extends StatelessWidget {
   @override
