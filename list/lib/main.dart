@@ -1,6 +1,12 @@
-
-import 'package:flutter/material.dart';
+import 'package:bloc/bloc.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'app.dart';
+import 'package:list/simple_bloc_observer.dart';
 
 void main() {
-  runApp()
+  BlocOverrides.runZoned(
+    () => runApp(App()),
+    blocObserver: SimpleBlocObserver(),
+  );
 }
